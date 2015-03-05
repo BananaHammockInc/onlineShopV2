@@ -1,6 +1,6 @@
 <%-- 
-    Document   : loginOk
-    Created on : 10-Feb-2015, 12:08:09
+    Document   : supplierLogin
+    Created on : 02-Mar-2015, 11:55:55
     Author     : dex
 /**
  * 
@@ -21,7 +21,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Success!</title>
+        <title>Supplier</title>
         <style>
             .jumbotron {
                 height: 100px;
@@ -53,10 +53,11 @@
         </style>
     </head>
     <body id="wrapper" class="container">
+       
         <script type="text/javascript">
             try {
-                var admin = ${user.admin};
-                if(!admin) {
+                var supplierAdmin = ${user.supplierAdmin};
+                if(!supplierAdmin) {
                     window.location.href = "shopFront";
                 }
             } catch(err) {
@@ -65,7 +66,6 @@
         </script>
         <div class="navbar navbar-default">
            <h1 align='center'>Banana Hammock!</h1>
-           <h3 align="right">You are now logged in as: ${user.employee.email}</h3>
            <div class="container">
             <ul class="nav nav-pills">
                 <li role="presentation" class=" col-xs-2"><a href="shopFront">Shop</a></li>
@@ -74,21 +74,12 @@
               
         </div>
         </div>
-           <div class="wide">
+            <h2 align="center">Welcome</h2>
+        <div class="wide">
            <div class="btn-group-vertical col-md-6 move-right" role="group" aria-label="false">
-                 <button type="button" class="btn btn-default"><a href="createEmployee.jsp"> Create new employee </a></button>
-                 <button type="button" class="btn btn-default"><a href="ListEmployee"> Show Employees </a></button>
-                 <button type="button" class="btn btn-default"><a href="customerServlet"> Show Customers </a></button>
-                 <button type="button" class="btn btn-default"><a href="createSupplier.jsp"> Create new supplier</a></button>
-                 <button type="button" class="btn btn-default"><a href="supplierServlet"> Show Suppliers </a></button>
-                 <button type="button" class="btn btn-default"><a href="addNewProduct"> Add new product</a></button>
-                 <button type="button" class="btn btn-default"><a href="productServlet"> Show products</a></button>
-                 <button type="button" class="btn btn-default"><a href="updateStockLevelServlet"> Update stock Level</a></button>
-                 <button type="button" class="btn btn-default"><a href="updateCustomerDetails"> Update customer details</a></button>
-                 <button type="button" class="btn btn-default"><a href="allPurchases"> See purchases</a></button>
-                 
-                 
-               </div>
-            </div>
+               <button type="button" class="btn btn-default"><a href="createOrder"> Create new order </a><br></button>
+               <button type="button" class="btn btn-default"><a href="viewOrder"> See all orders </a><br></button>
+               <button type="button" class="btn btn-default"><a href="addNewProduct"> create new product </a><br></button>
+           </div></div>
     </body>
 </html>

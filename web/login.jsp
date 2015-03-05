@@ -2,21 +2,29 @@
     Document   : login
     Created on : 10-Feb-2015, 11:14:33
     Author     : dex
+/**
+ * 
+ * Aaron Kelly - 12350566
+ * Alex McElhinney - 12437802
+ * Evan Preisler - 10101753
+ * CT338 - Software Engineering Project: Banana Hammock, Online Fruit & Veg Store
+ * 2015
+ * 
+ *
+ * @author dex
+ */
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet"</link>
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet"></link>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Login</title>
         <style>
-            .jumbotron {
-                height: 100px;
-            }
             .wide {
-                width: 50%;
+                width: 100%;
                 height: 500px;
                 background-image: url('http://www.wpclipart.com/food/fruit/banana/banana_peeled.png');
                 background-repeat: no-repeat;
@@ -35,27 +43,36 @@
             .p {
                 text-align: justify;
             }
+            
+            #wrapper {
+                    border: 1px #e4e4e4 solid;
+            }
+            
+            .float{
+                float: right;
+            }
+
         </style>
     </head>
-    <body>
+    <body id="wrapper" class="container">
         <div class="navbar navbar-default">
            <h1 align='center'>Banana Hammock!</h1>
-        </div>
-        <div class="container">
+             <div class="container">
             <ul class="nav nav-pills">
-                <li role="presentation" class=" col-xs-4"><a href="shopFront">Shop</a></li>
-                <li role="presentation"class="active col-xs-4"><a href="createCustomer.jsp"> Sign up!</a></li>
+                <li role="presentation" class=" col-xs-2"><a href="shopFront">Shop</a></li>
+                <li role="presentation" class="active col-xs-2 pull-right"><a href="createCustomer.jsp"> Sign up!</a></li>
             </ul>
         </div>
-        <p><form class="col-md-10" align="center" id="loginForm" action="loginServlet" method="post">
-        <table align="center">
-            <div class='wide col-md-6'>
-            <tr><td>Email:</td><td><input type="text" id="FName" name="Email"/></td></tr>
-            <tr><td>Password:</td><td><input type="password" id="UserPassword" name="UserPassword"/></td></tr>
-            </div>
-        </table>
-            <input type="submit" id="login" value="Login"/><br>
-            <p><a href="tooBad.jsp"> Forgot your password? </a></p>
+        </div>
+        <div class="wide col-md-12 center">
+             <p><form class="col-md-10 float" align="center" id="loginForm" action="loginServlet" method="post">
+             <table align="center">
+              <tr><td>Email:</td><td><input type="text" id="FName" name="Email"/></td></tr>
+              <tr><td>Password:</td><td><input type="password" id="UserPassword" name="UserPassword"/></td></tr>
+             </table>
+                 <button type="submit" class="btn-primary" id="login"> Log in</button>
+                 <p><a href="tooBad.jsp"> Forgot your password? </a></p>
         </form></p>
+        </div>   
     </body>
 </html>

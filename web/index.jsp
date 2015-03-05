@@ -2,53 +2,77 @@
     Document   : index
     Created on : 09-Feb-2015, 18:55:11
     Author     : dex
+/**
+ * 
+ * Aaron Kelly - 12350566
+ * Alex McElhinney - 12437802
+ * Evan Preisler - 10101753
+ * CT338 - Software Engineering Project: Banana Hammock, Online Fruit & Veg Store
+ * 2015
+ * 
+ *
+ * @author dex
+ */
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet"</link>
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet"></link>
 <!DOCTYPE html>
 <html>
-    <%
-            Cookie[] oldCookies = request.getCookies();
-            for(int i = 0; i < oldCookies.length; i++) {
-                oldCookies[i].setMaxAge(0);
-                oldCookies[i].setValue("");
-            }
-        %>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Welcome!</title>
+        <title>Login</title>
         <style>
             .wide {
                 width: 100%;
                 height: 500px;
-                background-image: url('http://s7d9.scene7.com/is/image/BedBathandBeyond/189710525586p?$478$');
+                background-image: url('http://www.wpclipart.com/food/fruit/banana/banana_peeled.png');
+                background-repeat: no-repeat;
+                background-origin: content-box;
+           
             }
-            .wide image {
-                width: 100%;
-            }
-            
-            .line {
-                padding-top: 10px;
-                overflow: hidden;
-                text-align: center;
+            .wide img {
+                width: 50%;
             }
             
-            .logo {
-                color: #000;
-                text-align: center;
+            .form {
+                height: 200px;
+                width: 200px;
+                padding-right: 20px;
             }
+            .p {
+                text-align: justify;
+            }
+            
+            #wrapper {
+                    border: 1px #e4e4e4 solid;
+            }
+            
+            .float{
+                float: right;
+            }
+
         </style>
     </head>
-    
-    <div class="jumbotron">
-         <h1>Welcome to Banana Hammock!</h1>
-         <p> Welcome to Banana Hammock's online fruit and vegetable store!</p>
-         <p><a class="btn btn-primary btn-lg" href="login.jsp" role="button"> Start Shopping</a></p>
+    <body id="wrapper" class="container">
+        <div class="navbar navbar-default">
+           <h1 align='center'>Banana Hammock!</h1>
+             <div class="container">
+            <ul class="nav nav-pills">
+                <li role="presentation" class=" col-xs-2"><a href="shopFront">Shop</a></li>
+                <li role="presentation" class="active col-xs-2 pull-right"><a href="createCustomer.jsp"> Sign up!</a></li>
+            </ul>
         </div>
-    <div class="wide"> 
-            <div class="col-xs-4 line"><hr></div>
-            <div class="col-xs-4 logo">I AM A BANANA</div>
-            <div class="col-xs-4 line"><hr></div>
-    </div>
+        </div>
+        <div class="wide col-md-12 center">
+             <p><form class="col-md-10 float" align="center" id="loginForm" action="loginServlet" method="post">
+             <table align="center">
+              <tr><td>Email:</td><td><input type="text" id="FName" name="Email"/></td></tr>
+              <tr><td>Password:</td><td><input type="password" id="UserPassword" name="UserPassword"/></td></tr>
+             </table>
+                 <button type="submit" class="btn-primary" id="login"> Log in</button>
+                 <p><a href="tooBad.jsp"> Forgot your password? </a></p>
+        </form></p>
+        </div>   
+    </body>
 </html>

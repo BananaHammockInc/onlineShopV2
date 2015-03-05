@@ -2,10 +2,23 @@
     Document   : createCustomer
     Created on : 17-Feb-2015, 09:43:54
     Author     : dex
+/**
+ * 
+ * Aaron Kelly - 12350566
+ * Alex McElhinney - 12437802
+ * Evan Preisler - 10101753
+ * CT338 - Software Engineering Project: Banana Hammock, Online Fruit & Veg Store
+ * 2015
+ * 
+ *
+ * @author dex
+ */
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet"</link>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" type="text/css"></link>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 <!DOCTYPE html>
 <html>
     <head>
@@ -35,18 +48,22 @@
             .p {
                 text-align: justify;
             }
+             #wrapper {
+                    border: 1px #e4e4e4 solid;
+            }
         </style>
     </head>
-    <body>
+    <body id="wrapper" class="container">
         <div class="navbar navbar-default">
            <h1 align='center'>Banana Hammock!</h1>
-        </div>
-        <div class="container">
+           <div class="container">
             <ul class="nav nav-pills">
-                <li role="presentation" class=" col-xs-4"><a href="shopFront">Shop</a></li>
-                <li role="presentation"class="active col-xs-4"><a href="login.jsp"> Log in!</a></li>
+                <li role="presentation"><a href="shopFront">Shop</a></li>
+                <li role="presentation"><a href="login.jsp"> Log in!</a></li>
             </ul>
         </div>
+        </div>
+        
         <h1 align="center">Please enter you details below</h1>
         <form id="createCustomerForm" action="newCustomerServlet" method="post">
         <table>
@@ -61,7 +78,7 @@
             <tr><td>Credit Card Number:</td><td><input type="number" id="Salary" name="CreditCard"/></td></tr>
             </div>
         </table>
-            <button class="btn-primary" type="submit" id="createCustomer">Create new account</button>
+            <p><button class="btn btn-primary" type="submit" id="createCustomer">Create new account</button></p>
         </form>
         <a href="index.jsp">Cancel</a>
         <p>Clean and simple, ammiright? Thank you!</p>

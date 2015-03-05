@@ -1,6 +1,6 @@
 <%-- 
-    Document   : createSupplier.jsp
-    Created on : 17-Feb-2015, 10:37:51
+    Document   : showCustomerPurchase
+    Created on : 27-Feb-2015, 15:28:47
     Author     : dex
 /**
  * 
@@ -15,6 +15,7 @@
  */
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" type="text/css"></link>
@@ -23,13 +24,13 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>New supplier</title>
+        <title>History</title>
         <style>
             .jumbotron {
                 height: 100px;
             }
             .wide {
-                width: 50%;
+                width: 100%;
                 height: 500px;
                 background-image: url('http://www.wpclipart.com/food/fruit/banana/banana_peeled.png');
                 background-repeat: no-repeat;
@@ -90,8 +91,7 @@
                 <li class="dropdown">
                     <a href="#" data-toggle="dropdown" class="dropdown-toggle">History<b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                       <li role="presentation"><a href="showAllPurchase.jsp">Show all purchases</a></li>
-                     
+                       <li role="presentation"><a href="allPurchases">Show all purchases</a></li>
                     </ul>
                 </li>
                 
@@ -99,18 +99,57 @@
             </ul>
         </div>
         </div>
-        <h2 align="center">Add a new supplier to the database</h1>
-        <form id="createSupplierForm" action="newSupplierServlet" method="post">
-        <table>
-            <div class="wide col-md-6">
-                <tr><td>Business Name:</td><td><input type="text" id="FName" name="BusinessName"/></td></tr>
-                <tr><td>Password:</td><td><input type="password" id="UserPassword" name="UserPassword"/></td></tr>
-            </div>
-        </table>
-            <button class="btn btn-primary" type="submit" id="createSupplier"> Add supplier</button>
-           
-        </form>
+    </head>
+    <body>
+        <h2 align="center">Purchase history</h2>
+        <div class="panel panel-info">
+           <div class="panel-heading">Customers</div>
         
-    </body> 
-    <a href="loginOk.jsp">Cancel</a>
+        <table align="center" id="allCustomerPurchasesTable" class="table">
+            <tr>
+                <th bgcolor=>Purchase ID</th>
+                <th bgcolor=>Date</th>
+                <th bgcolor=>Total Removed</th>
+                <th bgcolor=>Pick</th>
+            </tr>
+            <c:forEach var="customerPurchase" begin="0" items="${requestScope.haveAllPurchases.purchaseC}">
+                <tr>
+                    <td>${customerPurchase.puID}</td>
+                    <td>${customerPurchase.date}</td>
+                    <td>${customerPurchase.totalRemoved}</td>
+                    <td>
+                        <form action="getReceipt" method="post">
+                            <input type="hidden" name="customerID" value="${customerPurchase.customerID.CID}"/>
+                            <input type="hidden" name="purchaseID" value="${customerPurchase.puID}"/>
+                            <input type="submit" name="submit" value="Check Receipt">
+                        </form>
+                    </td>
+                </tr>
+            </c:forEach>
+        </table>
+        <div class="panel panel-info">
+           <div class="panel-heading">Employees</div>
+        <table align="center" id="allEmployeePurchasesTable" class="table">
+            <tr>
+                <th bgcolor=>Purchase ID</th>
+                <th bgcolor=>Date</th>
+                <th bgcolor=>Total Removed</th>
+                <th bgcolor=>Pick</th>
+            </tr>
+            <c:forEach var="employeePurchase" begin="0" items="${requestScope.haveAllPurchases.purchaseE}">
+                <tr>
+                    <td>${employeePurchase.puID}</td>
+                    <td>${employeePurchase.date}</td>
+                    <td>${employeePurchase.totalRemoved}</td>
+                    <td>
+                        <form action="getReceipt" method="post">
+                            <input type="hidden" name="employeeID" value="${employeePurchase.employeeID.pkID}"/>
+                            <input type="hidden" name="purchaseID" value="${employeePurchase.puID}"/>
+                            <input type="submit" name="submit" value="Check Receipt">
+                        </form>
+                    </td>
+                </tr>
+            </c:forEach>
+        </table>
+    </body>
 </html>
