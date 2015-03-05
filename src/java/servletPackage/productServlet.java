@@ -8,6 +8,7 @@ package servletPackage;
 import entityPackage.ProductTable;
 import facadePackage.ProductTableFacade;
 import cartPackage.ShoppingCart;
+import customObject.userSession;
 import java.io.IOException;
 import java.util.List;
 import javax.ejb.EJB;
@@ -17,8 +18,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 /**
+ * 
+ * Aaron Kelly - 12350566
+ * Alex McElhinney - 12437802
+ * Evan Preisler - 10101753
+ * CT338 - Software Engineering Project: Banana Hammock, Online Fruit & Veg Store
+ * 2015
+ * 
  *
  * @author dex
  */
@@ -35,24 +42,17 @@ public class productServlet extends HttpServlet {
         List products = listProTable.findAll();
         request.setAttribute("productList", products);
         HttpSession session = request.getSession();
-        ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
+        userSession user = (userSession) session.getAttribute("user");
         if (request.getServletPath().equals("/shopFront")) {
-            if (cart == null) {
-                cart = new ShoppingCart();
-                session.setAttribute("cart", cart);
-            }
             request.setAttribute("productList", products);
             request.getRequestDispatcher("welcome.jsp").forward(request, response);
         } else if (request.getServletPath().equals("/viewCart")) {
-            if (cart == null) {
-                cart = new ShoppingCart();
-                session.setAttribute("cart", cart);
+            if (user == null) {
+                request.getRequestDispatcher("login.jsp").forward(request, response);
             }
-            
-            cart.calculateTotal("0.0");
-            request.setAttribute("cart", cart);
+            user.getCart().calculateTotal("0.0");
+            request.setAttribute("cart", user.getCart());
             request.getRequestDispatcher("cart.jsp").forward(request, response);
-            
         } else if (request.getServletPath().equals("/productServlet")) {
             request.getRequestDispatcher("showProduct.jsp").forward(request, response);
         } else if (request.getServletPath().equals("/updateStockLevelServlet")) {
@@ -61,6 +61,7 @@ public class productServlet extends HttpServlet {
             int pid = Integer.parseInt(request.getParameter("productID"));
             try {
                 int stockLevel = Integer.parseInt(request.getParameter("updateValue"));
+                if(stockLevel < 0 ) stockLevel = 0;
                 ProductTable p = listProTable.find(pid);
                 p.setStockLevel(stockLevel);
                 listProTable.edit(p);

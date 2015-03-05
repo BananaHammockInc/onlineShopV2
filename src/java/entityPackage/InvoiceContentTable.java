@@ -18,8 +18,14 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-
 /**
+ * 
+ * Aaron Kelly - 12350566
+ * Alex McElhinney - 12437802
+ * Evan Preisler - 10101753
+ * CT338 - Software Engineering Project: Banana Hammock, Online Fruit & Veg Store
+ * 2015
+ * 
  *
  * @author dex
  */

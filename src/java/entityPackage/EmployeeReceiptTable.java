@@ -30,14 +30,14 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author dex
  */
 @Entity
-@Table(name = "receiptTable")
+@Table(name = "employeeReceiptTable")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "ReceiptTable.findAll", query = "SELECT r FROM ReceiptTable r"),
-    @NamedQuery(name = "ReceiptTable.findByRID", query = "SELECT r FROM ReceiptTable r WHERE r.rID = :rID"),
-    @NamedQuery(name = "ReceiptTable.findByAmountRemoved", query = "SELECT r FROM ReceiptTable r WHERE r.amountRemoved = :amountRemoved"),
-    @NamedQuery(name = "ReceiptTable.findByCost", query = "SELECT r FROM ReceiptTable r WHERE r.cost = :cost")})
-public class ReceiptTable implements Serializable {
+    @NamedQuery(name = "EmployeeReceiptTable.findAll", query = "SELECT e FROM EmployeeReceiptTable e"),
+    @NamedQuery(name = "EmployeeReceiptTable.findByRID", query = "SELECT e FROM EmployeeReceiptTable e WHERE e.rID = :rID"),
+    @NamedQuery(name = "EmployeeReceiptTable.findByAmountRemoved", query = "SELECT e FROM EmployeeReceiptTable e WHERE e.amountRemoved = :amountRemoved"),
+    @NamedQuery(name = "EmployeeReceiptTable.findByCost", query = "SELECT e FROM EmployeeReceiptTable e WHERE e.cost = :cost")})
+public class EmployeeReceiptTable implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,15 +51,15 @@ public class ReceiptTable implements Serializable {
     private Double cost;
     @JoinColumn(name = "purchaseID", referencedColumnName = "puID")
     @ManyToOne
-    private PurchaseTable purchaseID;
+    private EmployeePurchaseTable purchaseID;
     @JoinColumn(name = "productID", referencedColumnName = "pID")
     @ManyToOne
     private ProductTable productID;
 
-    public ReceiptTable() {
+    public EmployeeReceiptTable() {
     }
 
-    public ReceiptTable(Integer rID) {
+    public EmployeeReceiptTable(Integer rID) {
         this.rID = rID;
     }
 
@@ -87,11 +87,11 @@ public class ReceiptTable implements Serializable {
         this.cost = cost;
     }
 
-    public PurchaseTable getPurchaseID() {
+    public EmployeePurchaseTable getPurchaseID() {
         return purchaseID;
     }
 
-    public void setPurchaseID(PurchaseTable purchaseID) {
+    public void setPurchaseID(EmployeePurchaseTable purchaseID) {
         this.purchaseID = purchaseID;
     }
 
@@ -113,10 +113,10 @@ public class ReceiptTable implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ReceiptTable)) {
+        if (!(object instanceof EmployeeReceiptTable)) {
             return false;
         }
-        ReceiptTable other = (ReceiptTable) object;
+        EmployeeReceiptTable other = (EmployeeReceiptTable) object;
         if ((this.rID == null && other.rID != null) || (this.rID != null && !this.rID.equals(other.rID))) {
             return false;
         }
@@ -125,7 +125,7 @@ public class ReceiptTable implements Serializable {
 
     @Override
     public String toString() {
-        return "entityPackage.ReceiptTable[ rID=" + rID + " ]";
+        return "entityPackage.EmployeeReceiptTable[ rID=" + rID + " ]";
     }
     
 }

@@ -6,6 +6,7 @@
 package entityPackage;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,11 +15,19 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-
+import javax.xml.bind.annotation.XmlTransient;
 /**
+ * 
+ * Aaron Kelly - 12350566
+ * Alex McElhinney - 12437802
+ * Evan Preisler - 10101753
+ * CT338 - Software Engineering Project: Banana Hammock, Online Fruit & Veg Store
+ * 2015
+ * 
  *
  * @author dex
  */
@@ -39,6 +48,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Employee.findByRoleInCompany", query = "SELECT e FROM Employee e WHERE e.roleInCompany = :roleInCompany"),
     @NamedQuery(name = "Employee.findBySalary", query = "SELECT e FROM Employee e WHERE e.salary = :salary")})
 public class Employee implements Serializable {
+    @OneToMany(mappedBy = "employeeID")
+    private Collection<EmployeePurchaseTable> employeePurchaseTableCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -194,6 +205,15 @@ public class Employee implements Serializable {
     @Override
     public String toString() {
         return "entityPackage.Employee[ pkID=" + pkID + " ]";
+    }
+
+    @XmlTransient
+    public Collection<EmployeePurchaseTable> getEmployeePurchaseTableCollection() {
+        return employeePurchaseTableCollection;
+    }
+
+    public void setEmployeePurchaseTableCollection(Collection<EmployeePurchaseTable> employeePurchaseTableCollection) {
+        this.employeePurchaseTableCollection = employeePurchaseTableCollection;
     }
     
 }

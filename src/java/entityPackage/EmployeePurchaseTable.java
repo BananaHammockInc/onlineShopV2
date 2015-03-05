@@ -34,14 +34,14 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author dex
  */
 @Entity
-@Table(name = "purchaseTable")
+@Table(name = "employeePurchaseTable")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "PurchaseTable.findAll", query = "SELECT p FROM PurchaseTable p"),
-    @NamedQuery(name = "PurchaseTable.findByPuID", query = "SELECT p FROM PurchaseTable p WHERE p.puID = :puID"),
-    @NamedQuery(name = "PurchaseTable.findByDate", query = "SELECT p FROM PurchaseTable p WHERE p.date = :date"),
-    @NamedQuery(name = "PurchaseTable.findByTotalRemoved", query = "SELECT p FROM PurchaseTable p WHERE p.totalRemoved = :totalRemoved")})
-public class PurchaseTable implements Serializable {
+    @NamedQuery(name = "EmployeePurchaseTable.findAll", query = "SELECT e FROM EmployeePurchaseTable e"),
+    @NamedQuery(name = "EmployeePurchaseTable.findByPuID", query = "SELECT e FROM EmployeePurchaseTable e WHERE e.puID = :puID"),
+    @NamedQuery(name = "EmployeePurchaseTable.findByDate", query = "SELECT e FROM EmployeePurchaseTable e WHERE e.date = :date"),
+    @NamedQuery(name = "EmployeePurchaseTable.findByTotalRemoved", query = "SELECT e FROM EmployeePurchaseTable e WHERE e.totalRemoved = :totalRemoved")})
+public class EmployeePurchaseTable implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,15 +54,15 @@ public class PurchaseTable implements Serializable {
     @Column(name = "totalRemoved")
     private Integer totalRemoved;
     @OneToMany(mappedBy = "purchaseID")
-    private Collection<ReceiptTable> receiptTableCollection;
-    @JoinColumn(name = "customerID", referencedColumnName = "cID")
+    private Collection<EmployeeReceiptTable> employeeReceiptTableCollection;
+    @JoinColumn(name = "employeeID", referencedColumnName = "pk_ID")
     @ManyToOne
-    private CustomerTable customerID;
+    private Employee employeeID;
 
-    public PurchaseTable() {
+    public EmployeePurchaseTable() {
     }
 
-    public PurchaseTable(Integer puID) {
+    public EmployeePurchaseTable(Integer puID) {
         this.puID = puID;
     }
 
@@ -91,20 +91,20 @@ public class PurchaseTable implements Serializable {
     }
 
     @XmlTransient
-    public Collection<ReceiptTable> getReceiptTableCollection() {
-        return receiptTableCollection;
+    public Collection<EmployeeReceiptTable> getEmployeeReceiptTableCollection() {
+        return employeeReceiptTableCollection;
     }
 
-    public void setReceiptTableCollection(Collection<ReceiptTable> receiptTableCollection) {
-        this.receiptTableCollection = receiptTableCollection;
+    public void setEmployeeReceiptTableCollection(Collection<EmployeeReceiptTable> employeeReceiptTableCollection) {
+        this.employeeReceiptTableCollection = employeeReceiptTableCollection;
     }
 
-    public CustomerTable getCustomerID() {
-        return customerID;
+    public Employee getEmployeeID() {
+        return employeeID;
     }
 
-    public void setCustomerID(CustomerTable customerID) {
-        this.customerID = customerID;
+    public void setEmployeeID(Employee employeeID) {
+        this.employeeID = employeeID;
     }
 
     @Override
@@ -117,10 +117,10 @@ public class PurchaseTable implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof PurchaseTable)) {
+        if (!(object instanceof EmployeePurchaseTable)) {
             return false;
         }
-        PurchaseTable other = (PurchaseTable) object;
+        EmployeePurchaseTable other = (EmployeePurchaseTable) object;
         if ((this.puID == null && other.puID != null) || (this.puID != null && !this.puID.equals(other.puID))) {
             return false;
         }
@@ -129,7 +129,7 @@ public class PurchaseTable implements Serializable {
 
     @Override
     public String toString() {
-        return "entityPackage.PurchaseTable[ puID=" + puID + " ]";
+        return "entityPackage.EmployeePurchaseTable[ puID=" + puID + " ]";
     }
     
 }

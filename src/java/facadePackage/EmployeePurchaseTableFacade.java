@@ -5,7 +5,7 @@
  */
 package facadePackage;
 
-import entityPackage.PurchaseTable;
+import entityPackage.EmployeePurchaseTable;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -21,7 +21,7 @@ import javax.persistence.PersistenceContext;
  * @author dex
  */
 @Stateless
-public class PurchaseTableFacade extends AbstractFacade<PurchaseTable> {
+public class EmployeePurchaseTableFacade extends AbstractFacade<EmployeePurchaseTable> {
     @PersistenceContext(unitName = "onlineShopV2PU")
     private EntityManager em;
 
@@ -30,8 +30,8 @@ public class PurchaseTableFacade extends AbstractFacade<PurchaseTable> {
         return em;
     }
 
-    public PurchaseTableFacade() {
-        super(PurchaseTable.class);
+    public EmployeePurchaseTableFacade() {
+        super(EmployeePurchaseTable.class);
     }
     
 }

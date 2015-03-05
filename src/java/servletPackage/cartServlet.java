@@ -5,51 +5,153 @@
  */
 package servletPackage;
 
+import customObject.getTodayDate;
+import cartPackage.ShoppingCartItem;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import cartPackage.ShoppingCart;
 import entityPackage.ProductTable;
+import entityPackage.PurchaseTable;
+import customObject.userSession;
+import entityPackage.EmployeePurchaseTable;
+import entityPackage.EmployeeReceiptTable;
+import entityPackage.ReceiptTable;
+import facadePackage.EmployeePurchaseTableFacade;
+import facadePackage.EmployeeReceiptTableFacade;
 import facadePackage.ProductTableFacade;
+import facadePackage.PurchaseTableFacade;
+import facadePackage.ReceiptTableFacade;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.http.HttpSession;
-
 /**
+ * 
+ * Aaron Kelly - 12350566
+ * Alex McElhinney - 12437802
+ * Evan Preisler - 10101753
+ * CT338 - Software Engineering Project: Banana Hammock, Online Fruit & Veg Store
+ * 2015
+ * 
  *
  * @author dex
  */
-@WebServlet(name = "cartServlet", urlPatterns = {"/addToCart"})
+@WebServlet(name = "cartServlet", urlPatterns = {"/addToCart", "/updateCart", "/CheckOut"})
 public class cartServlet extends HttpServlet {
+
     @EJB
     private ProductTableFacade proFacade;
+    @EJB
+    private PurchaseTableFacade purFacade;
+    @EJB
+    private ReceiptTableFacade recFacade;
+    @EJB
+    private EmployeePurchaseTableFacade empPurFacade;
+    @EJB
+    private EmployeeReceiptTableFacade empRecFacade;
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       String userPath = request.getServletPath();
         HttpSession session = request.getSession();
-        ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
-        {
-            if (cart == null) {
-
-                cart = new ShoppingCart();
-                session.setAttribute("cart", cart);
+        userSession user = (userSession) session.getAttribute("user");
+        if (request.getServletPath().equals("/addToCart")) {
+            if (user == null) {
+                request.getRequestDispatcher("login.jsp").forward(request, response);
             }
             List<ProductTable> products = proFacade.findAll();
             int productId = Integer.parseInt(request.getParameter("productId"));
             if (productId >= 0) {
                 ProductTable product = proFacade.find(productId);
-                cart.addItem(product);
+                user.getCart().addItem(product);
                 System.out.println("product added:" + product.getProductName());
             }
             request.setAttribute("productList", products);
-        }
-        try {
-            request.getRequestDispatcher("welcome.jsp").forward(request, response);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+            try {
+                request.getRequestDispatcher("welcome.jsp").forward(request, response);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        } else if (request.getServletPath().equals("/updateCart")) {
+            System.out.println("updating:");
+            int productId = Integer.parseInt(request.getParameter("productId"));
+            int quantity = Integer.parseInt(request.getParameter("quantity"));
+            ProductTable product = proFacade.find(productId);
+            if (quantity < 1) {
+                user.getCart().removeItem(product);
+            }
+            user.getCart().update(product, (short) quantity);
+            System.out.println("product updated:" + product.getProductName());
+            try {
+                request.getRequestDispatcher("viewCart").forward(request, response);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        } else if (request.getServletPath().equals("/CheckOut")) {
+            System.out.println("Checking out:");
+            int totalRemoved = 0;
+            List<ReceiptTable> receiptTable = new ArrayList<ReceiptTable>();
+            List<EmployeeReceiptTable> employeeReceiptTable = new ArrayList<EmployeeReceiptTable>();
+            if (user.getAdmin()) {
+                for (ShoppingCartItem sci : user.getCart().getItems()) {
+                    EmployeeReceiptTable newEmpReceipt = new EmployeeReceiptTable();
+                    System.out.println(sci.getProduct().getProductName());
+                    int quantity = sci.getQuantity();
+                    totalRemoved += sci.getQuantity();
+                    ProductTable p = proFacade.find(sci.getProduct().getPID());
+                    int currentQ = p.getStockLevel();
+                    p.setStockLevel(currentQ - quantity);
+                    proFacade.edit(p);
+                    newEmpReceipt.setAmountRemoved(quantity);
+                    newEmpReceipt.setCost(p.getRetailPrice() * quantity);
+                    newEmpReceipt.setProductID(p);
+                    employeeReceiptTable.add(newEmpReceipt);
+                }
+                for (EmployeeReceiptTable r : employeeReceiptTable) {
+                    System.out.println(r.getProductID().getProductName() + ", " + r.getAmountRemoved());
+                }
+                getTodayDate today = new getTodayDate();
+                EmployeePurchaseTable pur = new EmployeePurchaseTable();
+                pur.setEmployeeID(user.getEmployee());
+                pur.setDate(today.getDate());
+                pur.setTotalRemoved(totalRemoved);
+                empPurFacade.create(pur);
+                for (EmployeeReceiptTable r : employeeReceiptTable) {
+                    r.setPurchaseID(pur);
+                    empRecFacade.create(r);
+                }
+            } else {
+                for (ShoppingCartItem sci : user.getCart().getItems()) {
+                    ReceiptTable newReceipt = new ReceiptTable();
+                    System.out.println(sci.getProduct().getProductName());
+                    int quantity = sci.getQuantity();
+                    totalRemoved += sci.getQuantity();
+                    ProductTable p = proFacade.find(sci.getProduct().getPID());
+                    int currentQ = p.getStockLevel();
+                    p.setStockLevel(currentQ - quantity);
+                    proFacade.edit(p);
+                    newReceipt.setAmountRemoved(quantity);
+                    newReceipt.setCost(p.getRetailPrice() * quantity);
+                    newReceipt.setProductID(p);
+                    receiptTable.add(newReceipt);
+                }
+                for (ReceiptTable r : receiptTable) {
+                    System.out.println(r.getProductID().getProductName() + ", " + r.getAmountRemoved());
+                }
+                getTodayDate today = new getTodayDate();
+                PurchaseTable pur = new PurchaseTable();
+                pur.setCustomerID(user.getCustomer());
+                pur.setDate(today.getDate());
+                pur.setTotalRemoved(totalRemoved);
+                purFacade.create(pur);
+                for (ReceiptTable r : receiptTable) {
+                    r.setPurchaseID(pur);
+                    recFacade.create(r);
+                }
+            }
+            request.getRequestDispatcher("shopFront").forward(request, response);
         }
     }
 

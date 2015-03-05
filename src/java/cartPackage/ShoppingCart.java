@@ -2,8 +2,14 @@ package cartPackage;
 
 import entityPackage.ProductTable;
 import java.util.*;
-
 /**
+ * 
+ * Aaron Kelly - 12350566
+ * Alex McElhinney - 12437802
+ * Evan Preisler - 10101753
+ * CT338 - Software Engineering Project: Banana Hammock, Online Fruit & Veg Store
+ * 2015
+ * 
  *
  * @author dex
  */
@@ -32,9 +38,9 @@ public class ShoppingCart {
         }
     }
 
-    public synchronized void update(ProductTable product, String quantity) {
+    public synchronized void update(ProductTable product, short quantity) {
         short qty = -1;
-        qty = Short.parseShort(quantity);
+        qty = quantity;
         if (qty >= 0) {
             ShoppingCartItem item = null;
             for (ShoppingCartItem scItem : items) {
@@ -84,5 +90,9 @@ public class ShoppingCart {
         items.clear();
         numberOfItems = 0;
         total = 0;
+    }
+
+    public void removeItem(ProductTable product) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

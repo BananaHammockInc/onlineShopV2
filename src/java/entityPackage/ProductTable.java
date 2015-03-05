@@ -22,8 +22,14 @@ import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-
 /**
+ * 
+ * Aaron Kelly - 12350566
+ * Alex McElhinney - 12437802
+ * Evan Preisler - 10101753
+ * CT338 - Software Engineering Project: Banana Hammock, Online Fruit & Veg Store
+ * 2015
+ * 
  *
  * @author dex
  */
@@ -39,6 +45,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "ProductTable.findByRetailPrice", query = "SELECT p FROM ProductTable p WHERE p.retailPrice = :retailPrice"),
     @NamedQuery(name = "ProductTable.findByStockLevel", query = "SELECT p FROM ProductTable p WHERE p.stockLevel = :stockLevel")})
 public class ProductTable implements Serializable {
+    @OneToMany(mappedBy = "productID")
+    private Collection<EmployeeReceiptTable> employeeReceiptTableCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -170,6 +178,15 @@ public class ProductTable implements Serializable {
     @Override
     public String toString() {
         return "entityPackage.ProductTable[ pID=" + pID + " ]";
+    }
+
+    @XmlTransient
+    public Collection<EmployeeReceiptTable> getEmployeeReceiptTableCollection() {
+        return employeeReceiptTableCollection;
+    }
+
+    public void setEmployeeReceiptTableCollection(Collection<EmployeeReceiptTable> employeeReceiptTableCollection) {
+        this.employeeReceiptTableCollection = employeeReceiptTableCollection;
     }
     
 }
